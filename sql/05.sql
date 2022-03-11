@@ -3,18 +3,23 @@
 -- You may directly modify this table.
 
 CREATE TABLE project (
-    id SERIAL PRIMARY KEY,
-    author_id BIGINT NOT NULL,
-    target_type VARCHAR(2),
-    target_id INTEGER,
-    developer_addr INET,
+    -- len=16
     developer_id UUID,
-    title CHAR(256),
-    data TEXT,
-    project_id INTEGER NOT NULL UNIQUE,
-    action SMALLINT NOT NULL,
+    -- len=8
+    author_id BIGINT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE,
     updated_at TIMESTAMPTZ
+    -- len=4
+    id SERIAL PRIMARY KEY,
+    target_id INTEGER,
+    project_id INTEGER NOT NULL UNIQUE,
+    -- len=2
+    action SMALLINT NOT NULL,
+    -- len=-1
+    target_type VARCHAR(2),
+    developer_addr INET,
+    title CHAR(256),
+    data TEXT,
 );
 
 -- PART 2:
@@ -37,7 +42,7 @@ INSERT INTO project VALUES (
     '2022-03-09T18:34:27+00:00'
 );
 
--- Header:
--- Data:
--- Padding:
--- Total:
+-- Header: 23 + 2 (12 null bitmaps) = 25 + 7 (padding) = 32 
+-- Data: 4 + 4 (padding alignment) + 8 + 0 + 0 + 0 + 16 + 0 + 0 + 4 + 2 + 2 (padding alignment) + 8 + 8 = 56
+-- Padding: 88 (header + data) + 0 (padding) = 88 
+-- Total: 88
